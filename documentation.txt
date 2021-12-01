@@ -1,0 +1,7 @@
+Installation des packages
+
+== nodemon
+== mysql2
+== sequelize (ORM)
+== cors (Cross origin Resource Sharing)
+== expressJS (Framework) ou typeORM
