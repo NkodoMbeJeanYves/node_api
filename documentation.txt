@@ -6,6 +6,7 @@ Installation des packages
 == cors (Cross origin Resource Sharing)
 == express (ExpressJS Framework) ou typeORM
 == dotenv (Edition du fichier d'environnement)
+== log4js-node (Logging)
 
 ===============================================
 DATABASE CONFIGURATION
@@ -35,3 +36,8 @@ CONTROLLER
 ===============================================
 Les controlleurs se mettent en place dans le dossier 'controllers', 
 il est possible de dupliquer et ou d'ameliorer le contenu du controleur ProductController.
+
+==============================================
+Logger
+==============================================
+le logging se configure dans le fichier config/log4js.json 
