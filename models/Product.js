@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Product = sequelize.define('product', {
+  const Product = sequelize.define('Product', {
     title: {
       type: DataTypes.STRING,
       allowNull: false
@@ -26,7 +26,8 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: true,
     // I want updatedAt to actually be called updateTimestamp
     updatedAt: 'updated_at',
-    createdAt: 'created_at'
+    createdAt: 'created_at',
+    sequelize
   })
 
   return Product

@@ -17,7 +17,7 @@ app.use(express.json())
 // get raw data as body
 app.use(express.urlencoded({ extended: true }))
 // Router
-app.use('/api', apiRouter)
+app.use('/api/v1', apiRouter)
 /* Middleware */
 
 app.get('/', (req, res) => {
