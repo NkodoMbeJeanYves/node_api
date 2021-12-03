@@ -1,0 +1,21 @@
+[2021-12-03T20:11:35.574] [DEBUG] app - Error:SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:73
+[2021-12-03T20:11:43.714] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@store:73
+[2021-12-03T20:13:47.054] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:70
+[2021-12-03T20:18:12.046] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:70
+[2021-12-03T20:18:12.144] [DEBUG] app - Error:Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client. ProductController@store:77
+[2021-12-03T20:20:17.824] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:70
+[2021-12-03T20:20:17.890] [DEBUG] app - Error:Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client. ProductController@store:77
+[2021-12-03T20:20:34.092] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:70
+[2021-12-03T20:20:34.133] [DEBUG] app - Error:Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client. ProductController@store:77
+[2021-12-03T20:21:24.143] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:70
+[2021-12-03T20:21:24.192] [DEBUG] app - Error:Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client. ProductController@store:77
+[2021-12-03T20:24:26.849] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:71
+[2021-12-03T20:24:26.889] [DEBUG] app - Error:Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client. ProductController@store:81
+[2021-12-03T20:28:43.793] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:71
+[2021-12-03T20:28:43.814] [DEBUG] app - Error:Error: error: SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@store:81
+[2021-12-03T20:30:36.931] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:71
+[2021-12-03T20:30:36.940] [DEBUG] app - Error:Error. ProductController@store:80
+[2021-12-03T20:32:06.993] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:71
+[2021-12-03T20:32:07.010] [DEBUG] app - Error:Error. ProductController@store:82
+[2021-12-03T20:33:00.524] [DEBUG] app - Error:SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@:71
+[2021-12-03T20:33:00.547] [DEBUG] app - Error:Error: SequelizeDatabaseError: Incorrect integer value: 'mon prix' for column `node_api`.`products`.`price` at row 1. ProductController@store:82
