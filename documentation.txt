@@ -24,6 +24,7 @@ db.products = require('./Product.js')(sequelize, DataTypes)
 MODEL
 ===============================================
 Prendre en exemple le modèle "product.js"
+le fichier [models/relatedModels.js] permet d'établir des relations entre les modèles.
 
 ===============================================
 ROUTING
@@ -41,3 +42,4 @@ il est possible de dupliquer et ou d'ameliorer le contenu du controleur ProductC
 Logger
 ==============================================
 le logging se configure dans le fichier config/log4js.json 
+

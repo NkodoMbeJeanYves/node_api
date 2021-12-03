@@ -1,5 +1,7 @@
 const dbConfig = require('../config/dbConfig')
 const { Sequelize, DataTypes } = require('sequelize')
+const path = require('path')
+const fs = require('fs')
 
 const sequelize = new Sequelize(
   dbConfig.DATABASE,
@@ -7,8 +9,6 @@ const sequelize = new Sequelize(
   dbConfig.PASSWORD, {
     host: dbConfig.HOST,
     dialect: dbConfig.dialect,
-    operatorsAliases: false,
-
     pool: {
       min: dbConfig.pool.min,
       max: dbConfig.pool.max,
@@ -28,8 +28,20 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 // table structure
-db.reviews = require('./Review.js')(sequelize, DataTypes)
-db.products = require('./Product.js')(sequelize, DataTypes)
+// db.Product = require('./Product.js')(sequelize, DataTypes)
+// db.Review = require('./Review.js')(sequelize, DataTypes)
+
+// instead of above [table structure codes] we do : under models folder we get all files and initialize model corresponding to each file
+fs.readdirSync(path.join(__dirname)).forEach(file => {
+  var model = null
+  if (file !== 'index.js' && file !== 'relatedModels.js') {
+    model = require(path.join(__dirname, file))(sequelize, DataTypes)
+    db[model.name] = model
+  }
+})
+
+// load relation between models
+require('./relatedModels')(db)
 
 db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
   .then(() => {
