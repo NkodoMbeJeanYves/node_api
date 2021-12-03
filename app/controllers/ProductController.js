@@ -1,5 +1,6 @@
 // autoload index.js
 const db = require('../models')
+var ValidationError = require('sequelize').ValidationError
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
@@ -22,19 +23,20 @@ const index = async (req, res) => {
     ]
   }) */
   var responseObject = {
-    error: {},
-    msg: '',
+    status: true,
     data: null,
-    status: true
+    error: {},
+    msg: ''
   }
-  log.debug(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
   await Product.findAll().then(
     (products) => {
       responseObject.data = products
+      log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }
   ).catch(err => {
-    log.debug(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    consoleLog(err)
+    log.error(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.error = err
     responseObject.status = false
     res.status(400).json(responseObject)
@@ -47,10 +49,10 @@ const index = async (req, res) => {
  */
 const store = async (req, res) => {
   var responseObject = {
-    error: {},
-    msg: '',
+    status: true,
     data: null,
-    status: true
+    error: {},
+    msg: ''
   }
   try {
     await db.sequelize.transaction(async (transaction) => {
@@ -68,18 +70,19 @@ const store = async (req, res) => {
         log.info(`New product created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         return res.status(201).json(responseObject)
       }).catch(err => {
-        log.debug(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-        responseObject.error = err
         throw new Error(err)
       })
     })
-    // redirect after successfull commit
-    return res.status(201).json(responseObject)
   } catch (error) {
-    log.debug(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-    error.errors.map(er => {
-      validationError[er.path] = er.message
-    })
+    if (error instanceof ValidationError) {
+      error.errors.map(er => {
+        validationError[er.path] = er.message
+      })
+    } else {
+      log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+      validationError = 'unable to store item'
+    }
+
     responseObject.error = validationError
     responseObject.status = false
 
@@ -93,28 +96,29 @@ const store = async (req, res) => {
  */
 const edit = async (req, res) => {
   var responseObject = {
-    error: {},
-    msg: '',
+    status: true,
     data: null,
-    status: true
+    error: {},
+    msg: ''
   }
 
   try {
     const id = req.params.id
     await Product.findOne({ where: { id: id } }).then(
       (updated) => {
-        responseObject.data = updated.datavalues
+        if (updated === null) {
+          throw new Error('product not found')
+        }
+        responseObject.data = updated.dataValues
         return res.status(200).json(responseObject)
       }
     ).catch(error => {
-      log.debug(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-      responseObject.status = false
-      responseObject.msg = 'item not found with id: ' + id
-      responseObject.error = error
       throw new Error(error)
     })
   } catch (error) {
-    log.debug(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.error(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    responseObject.status = false
+    responseObject.error = error
     return res.status(400).json(responseObject)
   }
 }
@@ -125,25 +129,34 @@ const edit = async (req, res) => {
  */
 const update = async (req, res) => {
   var responseObject = {
-    error: {},
-    msg: '',
+    status: true,
     data: null,
-    status: true
+    error: {},
+    msg: ''
   }
-  const id = req.params.id
-  await Product.update(req.body, { where: { id: id } }) // { fields: ['column_1', 'column_2',], where: { id: id } }
-    .then(
-      (updated) => {
-        consoleLog(updated)
-        responseObject.data = updated
-        res.status(200).json(responseObject)
-      }
-    ).catch(error => {
-      consoleLog(error)
-      responseObject.error = error
-      responseObject.status = false
-      res.status(200).json(responseObject)
-    })
+  try {
+    await db.sequelize.transaction(
+      async (transaction) => {
+        const id = req.params.id
+        await Product.update(req.body, { where: { id: id } }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+          .then(
+            (updated) => {
+              consoleLog(updated)
+              log.info(`Product updated, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+              responseObject.data = updated
+              res.status(200).json(responseObject)
+            }
+          ).catch(error => {
+            throw new Error(error)
+          })
+      })
+  } catch (err) {
+    consoleLog(err)
+    log.error(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    responseObject.error = err
+    responseObject.status = false
+    res.status(400).json(responseObject)
+  }
 }
 
 /**
@@ -152,25 +165,32 @@ const update = async (req, res) => {
  */
 const destroy = async (req, res) => {
   var responseObject = {
-    error: {},
-    msg: '',
+    status: true,
     data: null,
-    status: true
+    error: {},
+    msg: ''
   }
   const id = req.params.id
-  await Product.find({
+  await Product.findOne({
     where: { id: id }
   }).then(
     (product) => {
-      log.debug(`Product found before deletion. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+      if (product === null) {
+        log.debug(`Product not found, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+        throw new Error('Product not found')
+      } else {
+        deleteProduct(responseObject, id, res)
+      }
     }
   ).catch(error => {
     log.debug(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
-    responseObject.msg = 'item not found with id: ' + id
+    responseObject.msg = error
     return res.status(400).json(responseObject)
   })
+}
 
+const deleteProduct = async (responseObject, id, res) => {
   await Product.destroy({ where: { id: id } }).then(
     (product) => {
       consoleLog(product)
