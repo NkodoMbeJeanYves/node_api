@@ -37,11 +37,8 @@ CONTROLLER
 ===============================================
 Les controlleurs se mettent en place dans le dossier 'controllers', 
 il est possible de dupliquer et ou d'ameliorer le contenu du controleur ProductController.
-<<<<<<< HEAD
-=======
 
 ==============================================
 Logger
 ==============================================
 le logging se configure dans le fichier config/log4js.json 
->>>>>>> development
