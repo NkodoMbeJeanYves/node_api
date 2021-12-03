@@ -4,7 +4,7 @@ const log4js = require('../config/log4js')
 var log = log4js.getLogger('app')
 
 // create main Model
-const Product = db.products
+const Product = db.Product
 
 // Methods
 
