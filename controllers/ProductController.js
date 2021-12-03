@@ -1,5 +1,7 @@
 // autoload index.js
 const db = require('../models')
+const log4js = require('../config/log4js')
+var log = log4js.getLogger('app')
 
 // create main Model
 const Product = db.products
@@ -13,6 +15,7 @@ const index = async (req, res) => {
       'price'
     ]
   }) */
+  log.debug('Fetching products')
   const products = await Product.findAll()
   res.status(200).json(products)
 }
@@ -26,6 +29,7 @@ const store = async (req, res) => {
     published: req.body.published ? req.body.published : false
   }
 
+  log.info('new product created')
   const product = await Product.create(info)
   res.status(201).send(product)
 }
@@ -33,6 +37,12 @@ const store = async (req, res) => {
 const edit = async (req, res) => {
   const id = req.params.id
   const product = await Product.findOne({ where: { id: id } })
+  if (product) {
+    log.info('product found, id: ' + id)
+  } else {
+    log.info('product not found, id: ' + id)
+  }
+
   res.status(200).send(product)
 }
 
@@ -44,7 +54,16 @@ const update = async (req, res) => {
 
 const destroy = async (req, res) => {
   const id = req.params.id
+  const product = await Product.find({
+    where: { id: id }
+  })
+  if (product) {
+    log.info('product found, id: ' + id)
+  } else {
+    log.info('product not found, id: ' + id)
+  }
   await Product.destroy({ where: { id: id } })
+  log.debug('product deleted, id: ' + id)
   res.status(200).send('product deleted')
 }
 
