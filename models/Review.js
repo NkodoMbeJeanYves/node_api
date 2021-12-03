@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Review = sequelize.define('review', {
+  const Review = sequelize.define('Review', {
     title: {
       type: DataTypes.STRING,
       allowNull: false
@@ -13,6 +13,13 @@ module.exports = (sequelize, DataTypes) => {
     published: {
       type: DataTypes.BOOLEAN
     }
+  }, {
+    tableName: 'reviews',
+    timestamps: true,
+    // I want updatedAt to actually be called updateTimestamp
+    updatedAt: 'updated_at',
+    createdAt: 'created_at',
+    sequelize
   })
 
   return Review

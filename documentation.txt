@@ -24,6 +24,7 @@ db.products = require('./Product.js')(sequelize, DataTypes)
 MODEL
 ===============================================
 Prendre en exemple le modèle "product.js"
+le fichier [models/relatedModels.js] permet d'établir des relations entre les modèles.
 
 ===============================================
 ROUTING
