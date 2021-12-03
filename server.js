@@ -19,7 +19,6 @@ app.use(express.urlencoded({ extended: true }))
 // Router
 app.use('/api/v1', apiRouter)
 /* Middleware */
-
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome in our NodeJS Api template' })
 })
