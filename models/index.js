@@ -28,10 +28,10 @@ db.Sequelize = Sequelize
 db.sequelize = sequelize
 
 // table structure
+db.reviews = require('./Review.js')(sequelize, DataTypes)
 db.products = require('./Product.js')(sequelize, DataTypes)
-// db.reviews = require('./Review.js')(sequelize, DataTypes)
 
-db.sequelize.sync({ force: false }) // sync database everytime app is running, wipe all table and re-create
+db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
   .then(() => {
     console.log('yes re-sync done!')
   })
