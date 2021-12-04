@@ -7,11 +7,20 @@ module.exports = (sequelize, DataTypes) => {
     reference: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true
+      unique: true,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+        isAlphanumeric: true,
+        len: { args: [4, 15], msg: 'reference has to between 4 and 15 characters' }
+      }
     },
     price: {
       type: DataTypes.INTEGER,
-      defaultValue: 0
+      defaultValue: 0,
+      validate: {
+        isInt: { args: true, msg: 'The price must be numeric' }
+      }
     },
     description: {
       type: DataTypes.TEXT,

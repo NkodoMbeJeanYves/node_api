@@ -1,6 +1,5 @@
 // autoload index.js
 const db = require('../models')
-var ValidationError = require('sequelize').ValidationError
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
@@ -70,19 +69,18 @@ const store = async (req, res) => {
         consoleLog(responseObject.data)
         log.info(`New product created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         return res.status(201).json(responseObject)
-      }).catch(err => {
-        throw new Error(err)
+      }).catch(err => { // SequelizeValidationError
+        err.errors.map(er => {
+          validationError[er.path] = er.message
+        })
+        throw new Error('Validation failed')
       })
     })
   } catch (error) {
-    if (error instanceof ValidationError) {
-      error.errors.map(er => {
-        validationError[er.path] = er.message
-      })
-    } else {
-      log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-      validationError = 'unable to store item'
+    if (error.message !== 'Validation failed') {
+      validationError = error
     }
+    log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
 
     responseObject.error = validationError
     responseObject.status = false

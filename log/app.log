@@ -1,0 +1,16 @@
+[2021-12-04T20:43:44.858] [ERROR] app - Error: SequelizeValidationError: Validation error: Validation len on reference failed. ProductController@store:83
+[2021-12-04T21:03:05.306] [ERROR] app - Error: SequelizeValidationError: Validation error: reference has to between 4 and 15 characters. ProductController@store:88
+[2021-12-04T21:26:10.897] [ERROR] app - Error: Validation failed. ProductController@store:83
+[2021-12-04T21:27:52.531] [ERROR] app - Error: Validation failed. ProductController@store:83
+[2021-12-04T21:28:40.319] [ERROR] app - Error: Validation failed. ProductController@store:83
+[2021-12-04T21:30:02.343] [ERROR] app - Error: Validation failed. ProductController@store:83
+[2021-12-04T21:33:09.819] [ERROR] app - Error: Validation failed. ProductController@store:83
+[2021-12-04T21:33:46.953] [ERROR] app - Error: Validation failed. ProductController@store:83
+[2021-12-04T21:34:17.818] [ERROR] app - TypeError: Cannot read property 'map' of undefined. ProductController@store:83
+[2021-12-04T21:36:04.657] [ERROR] app - Error: Validation failed. ProductController@store:83
+[2021-12-04T21:47:56.743] [ERROR] app - Error: Validation failed. ProductController@store:84
+[2021-12-04T21:52:23.637] [ERROR] app - Error: SequelizeValidationError: Validation error: reference has to between 4 and 15 characters,
+Validation error: The price must be numeric. ProductController@store:84
+[2021-12-04T21:53:51.047] [ERROR] app - Error: SequelizeValidationError: Validation error: reference has to between 4 and 15 characters,
+Validation error: The price must be numeric. ProductController@store:84
+[2021-12-04T21:54:46.980] [ERROR] app - Error: Validation failed. ProductController@store:83
