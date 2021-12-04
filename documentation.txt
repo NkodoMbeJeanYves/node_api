@@ -6,7 +6,8 @@ Installation des packages
 == cors (Cross origin Resource Sharing)
 == express (ExpressJS Framework) ou typeORM
 == dotenv (Edition du fichier d'environnement)
-== log4js-node (Logging)
+== log4js (Logging)
+== get-current-line (get current script file and line)
 
 ===============================================
 DATABASE CONFIGURATION
