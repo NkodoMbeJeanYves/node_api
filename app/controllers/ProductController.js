@@ -179,7 +179,7 @@ const destroy = async (req, res) => {
         log.debug(`Product not found, id: ${id}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         throw new Error('Product not found')
       } else {
-        deleteProduct(responseObject, id, res)
+        deleteProductAsync(responseObject, id, res)
       }
     }
   ).catch(error => {
@@ -190,7 +190,7 @@ const destroy = async (req, res) => {
   })
 }
 
-const deleteProduct = async (responseObject, id, res) => {
+const deleteProductAsync = async (responseObject, id, res) => {
   await Product.destroy({ where: { id: id } }).then(
     (product) => {
       consoleLog(product)
