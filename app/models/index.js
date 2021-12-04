@@ -44,9 +44,11 @@ fs.readdirSync(path.join(__dirname)).forEach(file => {
 // load relation between models
 require('./relatedModels')(db)
 
-db.sequelize.sync({ force: sync }) // sync database everytime app is running, wipe all table and re-create
-  .then(() => {
-    console.log('sync status: ' + sync)
-  })
+if (sync === true) {
+  db.sequelize.sync({ force: true }) // sync database everytime app is running, wipe all table and re-create
+    .then(() => {
+      console.log('sync status: ' + sync)
+    })
+}
 
 module.exports = db
