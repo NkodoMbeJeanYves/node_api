@@ -54,6 +54,7 @@ const store = async (req, res) => {
     error: {},
     msg: ''
   }
+
   try {
     await db.sequelize.transaction(async (transaction) => {
       const info = {

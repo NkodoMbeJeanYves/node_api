@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
     price: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       defaultValue: 0
     },
     description: {
