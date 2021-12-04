@@ -2,6 +2,7 @@ const dbConfig = require('../config/dbConfig')
 const { Sequelize, DataTypes } = require('sequelize')
 const path = require('path')
 const fs = require('fs')
+const sync = process.env.SYNC
 
 const sequelize = new Sequelize(
   dbConfig.DATABASE,
@@ -43,9 +44,9 @@ fs.readdirSync(path.join(__dirname)).forEach(file => {
 // load relation between models
 require('./relatedModels')(db)
 
-db.sequelize.sync({ force: false }) // sync database everytime app is running, wipe all table and re-create
+db.sequelize.sync({ force: sync }) // sync database everytime app is running, wipe all table and re-create
   .then(() => {
-    console.log('yes re-sync done!')
+    console.log('sync status: ' + sync)
   })
 
 module.exports = db

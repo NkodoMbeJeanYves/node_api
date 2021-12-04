@@ -28,7 +28,7 @@ const index = async (req, res) => {
     error: {},
     msg: ''
   }
-  await Product.findAll().then(
+  await Product.findAll({ include: { model: db.Review, as: 'Reviews' } }).then(
     (products) => {
       responseObject.data = products
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -105,11 +105,12 @@ const edit = async (req, res) => {
 
   try {
     const id = req.params.id
-    await Product.findOne({ where: { id: id } }).then(
+    await Product.findOne({ where: { id: id }, include: { model: db.Review, as: 'Reviews' } }).then(
       (updated) => {
         if (updated === null) {
           throw new Error('product not found')
         }
+
         responseObject.data = updated.dataValues
         return res.status(200).json(responseObject)
       }
