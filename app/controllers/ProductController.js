@@ -27,7 +27,7 @@ const index = async (req, res) => {
     error: {},
     msg: ''
   }
-  await Product.findAll({ include: { model: db.Review, as: 'Reviews' } }).then(
+  await Product.findAll({ include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
     (products) => {
       responseObject.data = products
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -64,21 +64,22 @@ const store = async (req, res) => {
         published: req.body.published ? req.body.published : false
       }
 
-      await Product.create(info, { transaction }).then(newProduct => {
+      await Product.create(info, { fields: ['title', 'reference', 'description', 'price', 'published'], transaction }).then(newProduct => {
         responseObject.data = newProduct.dataValues
         consoleLog(responseObject.data)
         log.info(`New product created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         return res.status(201).json(responseObject)
       }).catch(err => { // SequelizeValidationError
-        err.errors.map(er => {
-          validationError[er.path] = er.message
-        })
-        throw new Error('Validation failed')
+        throw (err)
       })
     })
   } catch (error) {
-    if (error.message !== 'Validation failed') {
+    if (error.name !== 'SequelizeValidationError') {
       validationError = error
+    } else {
+      error.errors.map(er => {
+        validationError[er.path] = er.message
+      })
     }
     log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
 
@@ -138,7 +139,7 @@ const update = async (req, res) => {
     await db.sequelize.transaction(
       async (transaction) => {
         const id = req.params.id
-        await Product.update(req.body, { where: { id: id } }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Product.update(req.body, { where: { id: id }, fields: ['title', 'description', 'price', 'published'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
@@ -147,14 +148,22 @@ const update = async (req, res) => {
               res.status(200).json(responseObject)
             }
           ).catch(error => {
-            throw new Error(error)
+            throw error
           })
       })
   } catch (err) {
+    if (err.name !== 'SequelizeValidationError') {
+      validationError = err
+    } else {
+      err.errors.map(er => {
+        validationError[er.path] = er.message
+      })
+    }
+    log.error(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     consoleLog(err)
-    log.error(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-    responseObject.error = err
+    responseObject.error = validationError
     responseObject.status = false
+
     res.status(400).json(responseObject)
   }
 }

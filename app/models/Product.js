@@ -1,3 +1,5 @@
+const { isUUID, generateUUIDV4 } = require('../helpers/helpers')
+
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
     title: {
@@ -5,14 +7,16 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     reference: {
-      type: DataTypes.STRING,
-      allowNull: false,
+      type: DataTypes.UUID,
       unique: true,
+      defaultValue: DataTypes.UUIDV4, // Three of the values provided here (NOW, UUIDV1 and UUIDV4) are special default values, that should not be used to define types.
+      /* set (value) {
+        this.setDataValue('reference', (value) => { return 'value' + 'hello' })
+      }, */
       validate: {
-        notNull: true,
-        notEmpty: true,
-        isAlphanumeric: true,
-        len: { args: [4, 15], msg: 'reference has to between 4 and 15 characters' }
+        notNull: false,
+        notEmpty: false,
+        isUUID: (value) => isUUID(value)
       }
     },
     price: {
@@ -24,19 +28,26 @@ module.exports = (sequelize, DataTypes) => {
     },
     description: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     },
     published: {
       type: DataTypes.BOOLEAN,
       defaultValue: true
     }
   }, {
+    hooks: {
+      beforeCreate: () => {
+        this.reference = generateUUIDV4()
+      }
+    },
     tableName: 'products',
     timestamps: true,
     // I want updatedAt to actually be called updateTimestamp
     updatedAt: 'updated_at',
     createdAt: 'created_at',
-    sequelize
+    deletedAt: 'deleted_at',
+    sequelize,
+    paranoid: true // soft-deletion
   })
 
   return Product
