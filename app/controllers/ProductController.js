@@ -15,19 +15,14 @@ const Product = db.Product
  *  @route GET /api/v1/product
  */
 const index = async (req, res) => {
-  /* const products = await Product.findAll({
-    attributes: [
-      'title',
-      'price'
-    ]
-  }) */
+  // consoleLog(test_global)
   var responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
   }
-  await Product.findAll({ include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
+  await Product.findAll({ attributes: [ 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
     (products) => {
       responseObject.data = products
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -53,7 +48,7 @@ const store = async (req, res) => {
     error: {},
     msg: ''
   }
-
+log.info(req.body)
   try {
     await db.sequelize.transaction(async (transaction) => {
       const info = {

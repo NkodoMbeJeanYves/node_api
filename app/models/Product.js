@@ -1,4 +1,4 @@
-const { isUUID, generateUUIDV4 } = require('../helpers/helpers')
+const { isUUID, generateUuidV4 } = require('../helpers/helpers')
 
 module.exports = (sequelize, DataTypes) => {
   const Product = sequelize.define('Product', {
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     hooks: {
       beforeCreate: () => {
-        this.reference = generateUUIDV4()
+        this.reference = generateUuidV4()
       }
     },
     tableName: 'products',

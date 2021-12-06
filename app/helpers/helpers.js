@@ -1,4 +1,4 @@
-const { uuid, isUuid } = require('uuidv4')
+const { v4: uuidv4, validate: uuidValidate, version: uuidVersion } = require('uuid')
 
 /**
  * description output into console
@@ -21,10 +21,10 @@ const isTrue = ($value) => ($value === 'true')
  * description generate a custom uuidV4
  * @returns string
  */
-const generateUUIDV4 = () => {
-  return uuid()
+const generateUuidV4 = () => {
+  return uuidv4()
 }
 
-const isUUID = ($value) => (isUuid($value))
+const isUUID = ($value) => (uuidValidate($value) && uuidVersion == '4')
 
-module.exports = { consoleLog, isTrue, generateUUIDV4, isUUID }
+module.exports = { consoleLog, isTrue, generateUuidV4, isUUID }

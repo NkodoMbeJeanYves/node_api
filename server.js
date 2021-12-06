@@ -22,19 +22,44 @@ var corsOptions = {
 
 /* middlewares */
 app.use(cors(corsOptions))
-// get raw data as json
+
+// built-in middleware to handle urlencoded data (x-www-form-urlencoded)
+app.use(express.urlencoded({ extended: true}))
+// built-in middleware to handle json data (x-www-form-urlencoded)
 app.use(express.json())
-// get raw data as body
-app.use(express.urlencoded({ extended: true }))
+
 // Router
+/* apiRouter.use((err, req, res, next) => {
+    if (! err) {
+        return next();
+    }
+    consoleLog('There was an uncaught error', err.stack)
+    log.error('There was an uncaught error', err.stack)
+    // process.exit(1) // mandatory (as per the Node.js docs)
+    res.status(500);
+    res.send('500: Internal server error');
+}) */
+
 app.use('/api/v1', apiRouter)
 /* Middleware */
 
-process.on('uncaughtException', err => {
+/* process.on('UnhandledPromiseRejectionWarning', err => {
   consoleLog('There was an uncaught error', err)
   log.error('There was an uncaught error', err)
   process.exit(1) // mandatory (as per the Node.js docs)
-})
+}) */
+
+// Handle errors
+/* app.use((err, req, res, next) => {
+    if (! err) {
+        return next();
+    }
+    consoleLog('There was an uncaught error', err.stack)
+    log.error('There was an uncaught error', err.stack)
+    // process.exit(1) // mandatory (as per the Node.js docs)
+    res.status(500);
+    res.send('500: Internal server error');
+}); */
 
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome in our NodeJS Api template' })

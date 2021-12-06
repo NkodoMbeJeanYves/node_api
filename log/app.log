@@ -1,28 +1,37 @@
-[2021-12-05T21:32:15.724] [DEBUG] app - SequelizeValidationError
-[2021-12-05T21:32:15.734] [ERROR] app - SequelizeValidationError: Validation error: reference has to between 4 and 15 characters,
-Validation error: The price must be numeric. ProductController@store:85
-[2021-12-05T21:35:58.525] [ERROR] app - SequelizeValidationError: Validation error: Validation isAlphanumeric on reference failed. ProductController@store:84
-[2021-12-05T21:36:17.318] [ERROR] app - SequelizeDatabaseError: Data truncated for column 'reference' at row 1. ProductController@store:84
-[2021-12-05T21:46:30.070] [ERROR] app - SequelizeValidationError: Validation error: Validation isAlphanumeric on reference failed. ProductController@store:84
-[2021-12-05T21:47:02.117] [ERROR] app - SequelizeValidationError: Validation error: undefined must contains [a-z] or [0-9]. ProductController@store:84
-[2021-12-05T21:58:15.341] [ERROR] app - SequelizeValidationError: Validation error: reference must be a valid uuidv4. ProductController@store:84
-[2021-12-05T22:18:37.241] [INFO] app - Fetching products. ProductController@:33
-[2021-12-05T22:28:46.595] [ERROR] app - SequelizeValidationError: Validation error: reference must be a valid uuidv4. ProductController@store:84
-[2021-12-05T22:29:22.696] [ERROR] app - SequelizeValidationError: Validation error: reference must be a valid uuidv4. ProductController@store:84
-[2021-12-05T22:29:41.232] [INFO] app - New product created. ProductController@:70
-[2021-12-05T22:30:36.748] [INFO] app - New product created. ProductController@:70
-[2021-12-05T22:30:52.629] [INFO] app - New product created. ProductController@:70
-[2021-12-05T22:31:14.380] [INFO] app - Fetching products. ProductController@:33
-[2021-12-05T22:43:38.755] [INFO] app - New product created. ProductController@:70
-[2021-12-05T22:43:53.166] [INFO] app - New product created. ProductController@:70
-[2021-12-05T22:44:09.413] [INFO] app - New product created. ProductController@:70
-[2021-12-05T23:32:09.815] [ERROR] app - SequelizeValidationError: Validation error: Validation notEmpty on reference failed. ProductController@store:84
-[2021-12-05T23:32:34.321] [INFO] app - New product created. ProductController@:70
-[2021-12-05T23:33:03.034] [ERROR] app - SequelizeUniqueConstraintError: Validation error. ProductController@store:84
-[2021-12-05T23:35:13.158] [INFO] app - New product created. ProductController@:70
-[2021-12-05T23:37:17.732] [ERROR] app - SequelizeDatabaseError: Field 'reference' doesn't have a default value. ProductController@store:84
-[2021-12-05T23:38:46.406] [ERROR] app - SequelizeDatabaseError: Field 'description' doesn't have a default value. ProductController@store:84
-[2021-12-05T23:52:47.928] [INFO] app - New product created. ProductController@:70
-[2021-12-05T23:54:27.038] [INFO] app - New product created. ProductController@:70
-[2021-12-05T23:54:45.639] [ERROR] app - Error:Error: Error: product not found. ProductController@edit:120
-[2021-12-05T23:54:51.185] [INFO] app - Fetching products. ProductController@:33
+[2021-12-06T15:11:36.708] [INFO] app - Fetching products. ProductController@:34
+[2021-12-06T17:12:01.353] [INFO] app - Fetching products. ProductController@:28
+[2021-12-06T17:20:20.881] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
+[2021-12-06T17:23:56.163] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
+[2021-12-06T17:25:27.728] [INFO] app - {}
+[2021-12-06T17:25:27.816] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
+[2021-12-06T17:26:11.093] [INFO] app - {
+  title: 'my title',
+  description: 'my description',
+  price: 150,
+  published: 0
+}
+[2021-12-06T17:26:11.408] [INFO] app - New product created. ProductController@:65
+[2021-12-06T17:27:02.428] [INFO] app - {
+  title: 'my title',
+  description: 'my description',
+  price: 150,
+  published: 0
+}
+[2021-12-06T17:27:02.614] [INFO] app - New product created. ProductController@:65
+[2021-12-06T17:28:16.297] [INFO] app - {}
+[2021-12-06T17:28:16.399] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
+[2021-12-06T17:28:59.036] [INFO] app - {}
+[2021-12-06T17:28:59.296] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
+[2021-12-06T17:29:51.202] [INFO] app - {}
+[2021-12-06T17:29:51.273] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
+[2021-12-06T17:30:01.160] [INFO] app - {}
+[2021-12-06T17:30:01.230] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
+[2021-12-06T17:30:52.962] [INFO] app - {
+  title: 'my title',
+  description: 'my description',
+  price: 150,
+  published: 0
+}
+[2021-12-06T17:30:53.218] [INFO] app - New product created. ProductController@:65
+[2021-12-06T17:31:40.930] [INFO] app - {}
+[2021-12-06T17:31:41.109] [ERROR] app - SequelizeValidationError: notNull Violation: Product.title cannot be null. ProductController@store:79
