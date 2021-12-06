@@ -5,7 +5,7 @@ const { uuid, isUuid } = require('uuidv4')
  * @param {$value} $value
  */
 const consoleLog = ($value) => {
-  if (process.env.Log) {
+  if (process.env.DEBUG) {
     console.log($value)
   }
 }
