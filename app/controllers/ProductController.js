@@ -22,7 +22,8 @@ const index = async (req, res) => {
     error: {},
     msg: ''
   }
-  await Product.findAll({ attributes: [ 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
+  
+  await Product.findAll({ attributes: ['id', 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
     (products) => {
       responseObject.data = products
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -30,7 +31,7 @@ const index = async (req, res) => {
     }
   ).catch(err => {
     consoleLog(err)
-    log.error(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.error(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.error = err
     responseObject.status = false
     res.status(400).json(responseObject)
@@ -48,7 +49,7 @@ const store = async (req, res) => {
     error: {},
     msg: ''
   }
-log.info(req.body)
+
   try {
     await db.sequelize.transaction(async (transaction) => {
       const info = {
@@ -112,7 +113,7 @@ const edit = async (req, res) => {
       throw new Error(error)
     })
   } catch (error) {
-    log.error(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
     responseObject.error = error
     return res.status(400).json(responseObject)
@@ -187,7 +188,7 @@ const destroy = async (req, res) => {
       }
     }
   ).catch(error => {
-    log.debug(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.debug(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
     responseObject.msg = error
     return res.status(400).json(responseObject)
@@ -202,7 +203,7 @@ const deleteProductAsync = async (responseObject, id, res) => {
       res.status(200).json(responseObject)
     }
   ).catch(err => {
-    log.debug(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.debug(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
     res.status(400).json(responseObject)
   })
