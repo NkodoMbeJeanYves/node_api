@@ -10,9 +10,6 @@ const pkg = require('get-current-line').default // get current script filename a
 const log4js = require('./app/config/log4js')
 var log = log4js.getLogger('app') // enable logging
 
-// const asyncTryCatchMiddleware = require('./app/routes/root')
-const apiRouter = require('./app/routes/api')
-
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 var corsOptions = {
   origin: (_origin, callback) => { // _origin is the allowed client address
@@ -33,9 +30,7 @@ app.use(express.urlencoded({ extended: true }))
 // built-in middleware to handle json data (x-www-form-urlencoded)
 app.use(express.json())
 
-// app.use(asyncTryCatchMiddleware())
-
-// app.use('/api', apiRouter)
+// Routing Handler
 app.use('/api', root)
 /* Middleware */
 
