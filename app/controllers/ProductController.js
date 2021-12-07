@@ -1,6 +1,5 @@
 // autoload index.js
 const db = require('../models')
-var ValidationError = require('sequelize').ValidationError
 var consoleLog = require('../helpers/helpers').consoleLog // output into console regarding .env Log flag
 const log4js = require('../config/log4js')
 var log = log4js.getLogger('app') // enable logging
@@ -16,19 +15,15 @@ const Product = db.Product
  *  @route GET /api/v1/product
  */
 const index = async (req, res) => {
-  /* const products = await Product.findAll({
-    attributes: [
-      'title',
-      'price'
-    ]
-  }) */
+  // consoleLog(test_global)
   var responseObject = {
     status: true,
     data: null,
     error: {},
     msg: ''
   }
-  await Product.findAll({ include: { model: db.Review, as: 'Reviews' } }).then(
+  
+  await Product.findAll({ attributes: ['id', 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
     (products) => {
       responseObject.data = products
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
@@ -36,7 +31,7 @@ const index = async (req, res) => {
     }
   ).catch(err => {
     consoleLog(err)
-    log.error(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.error(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.error = err
     responseObject.status = false
     res.status(400).json(responseObject)
@@ -65,24 +60,24 @@ const store = async (req, res) => {
         published: req.body.published ? req.body.published : false
       }
 
-      await Product.create(info, { transaction }).then(newProduct => {
+      await Product.create(info, { fields: ['title', 'reference', 'description', 'price', 'published'], transaction }).then(newProduct => {
         responseObject.data = newProduct.dataValues
         consoleLog(responseObject.data)
         log.info(`New product created. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
         return res.status(201).json(responseObject)
-      }).catch(err => {
-        throw new Error(err)
+      }).catch(err => { // SequelizeValidationError
+        throw (err)
       })
     })
   } catch (error) {
-    if (error instanceof ValidationError) {
+    if (error.name !== 'SequelizeValidationError') {
+      validationError = error
+    } else {
       error.errors.map(er => {
         validationError[er.path] = er.message
       })
-    } else {
-      log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-      validationError = 'unable to store item'
     }
+    log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
 
     responseObject.error = validationError
     responseObject.status = false
@@ -118,7 +113,7 @@ const edit = async (req, res) => {
       throw new Error(error)
     })
   } catch (error) {
-    log.error(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
     responseObject.error = error
     return res.status(400).json(responseObject)
@@ -140,7 +135,7 @@ const update = async (req, res) => {
     await db.sequelize.transaction(
       async (transaction) => {
         const id = req.params.id
-        await Product.update(req.body, { where: { id: id } }) // { fields: ['column_1', 'column_2',], where: { id: id } }
+        await Product.update(req.body, { where: { id: id }, fields: ['title', 'description', 'price', 'published'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
               consoleLog(updated)
@@ -149,14 +144,22 @@ const update = async (req, res) => {
               res.status(200).json(responseObject)
             }
           ).catch(error => {
-            throw new Error(error)
+            throw error
           })
       })
   } catch (err) {
+    if (err.name !== 'SequelizeValidationError') {
+      validationError = err
+    } else {
+      err.errors.map(er => {
+        validationError[er.path] = er.message
+      })
+    }
+    log.error(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     consoleLog(err)
-    log.error(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-    responseObject.error = err
+    responseObject.error = validationError
     responseObject.status = false
+
     res.status(400).json(responseObject)
   }
 }
@@ -185,7 +188,7 @@ const destroy = async (req, res) => {
       }
     }
   ).catch(error => {
-    log.debug(`Error:${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.debug(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
     responseObject.msg = error
     return res.status(400).json(responseObject)
@@ -200,7 +203,7 @@ const deleteProductAsync = async (responseObject, id, res) => {
       res.status(200).json(responseObject)
     }
   ).catch(err => {
-    log.debug(`Error:${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
+    log.debug(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
     res.status(400).json(responseObject)
   })

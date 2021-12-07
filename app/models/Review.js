@@ -19,7 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     // I want updatedAt to actually be called updateTimestamp
     updatedAt: 'updated_at',
     createdAt: 'created_at',
-    sequelize
+    deletedAt: 'deleted_at',
+    sequelize,
+    paranoid: true
   })
 
   return Review
