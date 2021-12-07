@@ -25,6 +25,8 @@ const generateUuidV4 = () => {
   return uuidv4()
 }
 
-const isUUID = ($value) => (uuidValidate($value) && uuidVersion == '4')
+const isUUID = ($value) => (uuidValidate($value) && uuidVersion === '4')
 
-module.exports = { consoleLog, isTrue, generateUuidV4, isUUID }
+const randomBytes64 = () => require('crypto').randomBytes(64).toString('hex')
+
+module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64 }
