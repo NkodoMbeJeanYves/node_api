@@ -45,3 +45,10 @@ Logger
 ==============================================
 le logging se configure dans le fichier config/log4js.json 
 
+==============================================
+Advanced options
+==============================================
+In helpers.js we have set a [groupByField] method
+that we can apply to iterable
+items.groupByField('field')
+

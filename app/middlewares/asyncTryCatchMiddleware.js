@@ -8,6 +8,6 @@ module.exports = (req, res, next) => {
     // return res.send('You were stopped here because middleware is blocking')
   } catch (e) {
     console.log(e)
-    next(e)
+    next(e) // res.status(401).send('Middleware blocking')
   }
 }

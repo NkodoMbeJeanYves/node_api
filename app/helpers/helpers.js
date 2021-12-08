@@ -29,21 +29,6 @@ const isUUID = ($value) => (uuidValidate($value) && uuidVersion === '4')
 
 const randomBytes64 = () => require('crypto').randomBytes(64).toString('hex')
 
-const groupBy = (items, $property) => {
-  // check if items is iterable
-  if (!isIterable(items) || typeof items === 'string') return null
-  // check if each item has its property
-  const isPropertyExisted = items.reduce((res, el) => Object(el)[$property] !== undefined, Object.create(null))
-  if (!isPropertyExisted) return null
-
-  const result = items.reduce(function (result, currentValue) {
-    result[currentValue.make] = result[currentValue.make] || []
-    result[currentValue.make].push(currentValue)
-    return result
-  }, Object.create(null))
-  return result
-}
-
 function isIterable (obj) {
   // checks for null and undefined
   if (obj === null || obj === undefined) {
@@ -52,4 +37,19 @@ function isIterable (obj) {
   return typeof obj[Symbol.iterator] === 'function'
 }
 
-module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64, groupBy }
+Array.prototype.groupByField = function ($property) {
+  // check if items is iterable
+  if (!isIterable(this) || typeof this === 'string') return []
+  // check if each item has its property
+  const isPropertyExisted = this.reduce((_res, el) => Object(el)[$property] !== undefined, Object.create(null))
+  if (!isPropertyExisted) return []
+
+  const result = this.reduce(function (result, currentValue) {
+    result[currentValue[$property]] = result[currentValue[$property]] || []
+    result[currentValue[$property]].push(currentValue)
+    return result
+  }, Object.create(null))
+  return result
+}
+
+module.exports = { consoleLog, isTrue, generateUuidV4, isUUID, randomBytes64 }
