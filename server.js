@@ -1,5 +1,6 @@
 // load .env variables
 require('dotenv').config({ path: '.env' })
+require('./app/core/utils')
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -9,6 +10,7 @@ const path = require('path')
 const pkg = require('get-current-line').default // get current script filename and line
 const log4js = require('./app/config/log4js')
 var log = log4js.getLogger('app') // enable logging
+// import utils
 
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 var corsOptions = {

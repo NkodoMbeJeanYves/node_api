@@ -15,7 +15,6 @@ const Product = db.Product
  *  @route GET /api/v1/product
  */
 const index = async (req, res) => {
-  // consoleLog(test_global)
   var responseObject = {
     status: true,
     data: null,
@@ -26,7 +25,6 @@ const index = async (req, res) => {
   await Product.findAll({ attributes: ['id', 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
     (products) => {
       responseObject.data = products
-      log.debug(JSON.stringify(products.groupByField('published')))
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }
@@ -132,6 +130,7 @@ const update = async (req, res) => {
     error: {},
     msg: ''
   }
+
   try {
     await db.sequelize.transaction(
       async (transaction) => {
