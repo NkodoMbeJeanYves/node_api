@@ -28,7 +28,7 @@ const index = async (req, res) => {
 
   await Product.findAll({ attributes: ['id', 'reference', 'title', 'price', 'description', 'published'], include: { model: db.Review, as: 'Reviews', foreignKey: 'product_id' } }).then(
     (products) => {
-      responseObject.data = products
+      responseObject.data = products.groupByField('price')
       log.info(`Fetching products. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
       res.status(200).json(responseObject)
     }

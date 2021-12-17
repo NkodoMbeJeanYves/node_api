@@ -1,7 +1,0 @@
-[2021-12-08T11:11:58.413] [INFO] app - Fetching products. ProductController@:28
-[2021-12-08T11:42:09.102] [ERROR] app - ReferenceError: status is not defined. ProductController@:34
-[2021-12-08T11:42:12.991] [ERROR] app - ReferenceError: status is not defined. ProductController@:34
-[2021-12-08T11:43:58.926] [ERROR] app - ReferenceError: status is not defined. ProductController@:34
-[2021-12-08T12:22:05.201] [INFO] app - Fetching products. ProductController@:28
-[2021-12-09T06:43:44.269] [INFO] app - Fetching products. ProductController@:32
-[2021-12-17T13:52:57.957] [INFO] app - Fetching products. ProductController@:32
