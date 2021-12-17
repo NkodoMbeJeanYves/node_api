@@ -1,5 +1,6 @@
 // load .env variables
 require('dotenv').config({ path: '.env' })
+require('./app/core/utils')
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -9,9 +10,7 @@ const path = require('path')
 const pkg = require('get-current-line').default // get current script filename and line
 const log4js = require('./app/config/log4js')
 var log = log4js.getLogger('app') // enable logging
-
-// const asyncTryCatchMiddleware = require('./app/routes/root')
-const apiRouter = require('./app/routes/api')
+// import utils
 
 const whiteList = [`${process.env.APP_URL}:${port}`, `http://127.0.0.1:${port}`, 'http://www.yoursite.com']
 var corsOptions = {
@@ -33,9 +32,7 @@ app.use(express.urlencoded({ extended: true }))
 // built-in middleware to handle json data (x-www-form-urlencoded)
 app.use(express.json())
 
-// app.use(asyncTryCatchMiddleware())
-
-// app.use('/api', apiRouter)
+// Routing Handler
 app.use('/api', root)
 /* Middleware */
 
@@ -64,6 +61,14 @@ app.get('*', (req, res) => {
   } else {
     res.type('txt').send('404 Not Found')
   }
+})
+
+// An error handling middleware
+app.use((error, req, res, next) => {
+  // Error gets here
+  res.json({
+    message: error.message
+  })
 })
 
 app.listen(port, () => {
