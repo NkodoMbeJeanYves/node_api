@@ -11,8 +11,12 @@ const Product = db.Product
 
 // Methods
 /**
- *  @description Fetch products
- *  @route GET /api/v1/product
+ * @route GET /api/v1/product
+ * @description Fetch products
+ * @summary summary
+ * @param {paramType} paramId.paramType - paramDescription
+ * @param {requestBodyType} request.body - requestBodyDescription
+ * @return {responseType} status - responseDescription - responseContentType
  */
 const index = async (req, res) => {
   var responseObject = {
@@ -31,7 +35,7 @@ const index = async (req, res) => {
   ).catch(err => {
     consoleLog(err)
     log.error(`${err}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
-    responseObject.error = err
+    responseObject.error = err.message
     responseObject.status = false
     res.status(400).json(responseObject)
   })
@@ -70,7 +74,7 @@ const store = async (req, res) => {
     })
   } catch (error) {
     if (error.name !== 'SequelizeValidationError') {
-      validationError = error
+      validationError = error.message
     } else {
       error.errors.map(er => {
         validationError[er.path] = er.message
@@ -98,7 +102,7 @@ const edit = async (req, res) => {
   }
 
   try {
-    const id = req.params.id
+    const id = req.params.product_id
     await Product.findOne({ where: { id: id }, include: { model: db.Review, as: 'Reviews' } }).then(
       (updated) => {
         if (updated === null) {
@@ -114,7 +118,7 @@ const edit = async (req, res) => {
   } catch (error) {
     log.error(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
-    responseObject.error = error
+    responseObject.error = error.message
     return res.status(400).json(responseObject)
   }
 }
@@ -134,7 +138,7 @@ const update = async (req, res) => {
   try {
     await db.sequelize.transaction(
       async (transaction) => {
-        const id = req.params.id
+        const id = req.params.product_id
         await Product.update(req.body, { where: { id: id }, fields: ['title', 'description', 'price', 'published'], transaction }) // { fields: ['column_1', 'column_2',], where: { id: id } }
           .then(
             (updated) => {
@@ -149,7 +153,7 @@ const update = async (req, res) => {
       })
   } catch (err) {
     if (err.name !== 'SequelizeValidationError') {
-      validationError = err
+      validationError = err.message
     } else {
       err.errors.map(er => {
         validationError[er.path] = er.message
@@ -175,7 +179,7 @@ const destroy = async (req, res) => {
     error: {},
     msg: ''
   }
-  const id = req.params.id
+  const id = req.params.product_id
   await Product.findOne({
     where: { id: id }
   }).then(
@@ -190,7 +194,7 @@ const destroy = async (req, res) => {
   ).catch(error => {
     log.debug(`${error}. ${path.basename(pkg().file, '.js')}@${pkg().method}:${pkg().line}`)
     responseObject.status = false
-    responseObject.msg = error
+    responseObject.msg = error.message
     return res.status(400).json(responseObject)
   })
 }

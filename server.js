@@ -63,6 +63,14 @@ app.get('*', (req, res) => {
   }
 })
 
+// An error handling middleware
+app.use((error, req, res, next) => {
+  // Error gets here
+  res.json({
+    message: error.message
+  })
+})
+
 app.listen(port, () => {
   console.log('server running at port ' + port)
 })

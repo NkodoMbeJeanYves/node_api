@@ -14,11 +14,19 @@ router.route(`/${prefix}`)
   .get(ProductController.index)
   .post(ProductController.store)
 
-router.route(`/${prefix}/:id`)
+router.route(`/${prefix}/:product_id`)
   .get(ProductController.edit)
   .patch(ProductController.update)
   .delete(ProductController.destroy)
 
+// the way we could define a router middleware
+// this code is executed each time we have a param in the path
+router.param('product_id', (req, res, next, id) => {
+  console.log('router param id: ' + id)
+  next()
+  // we can pass any result by doing
+  // req.item = value
+})
 // another model binding
 prefix = 'another model'
 module.exports = router
